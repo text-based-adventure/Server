@@ -1,21 +1,23 @@
 package com.davis.models;
 
-import java.util.List;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity(name = "Book")
 public class Book {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
 	private String name;
 	
-	@OneToMany
-	private List<Page> pages;
+	@OneToOne(cascade=CascadeType.ALL, orphanRemoval=true)
+	private Page page;
 
 	public Book() {
 		super();
@@ -38,24 +40,24 @@ public class Book {
 		this.name = name;
 	}
 
-	public List<Page> getPages() {
-		return pages;
+	public Page getPage() {
+		return page;
 	}
 
-	public void setPages(List<Page> pages) {
-		this.pages = pages;
+	public void setPage(Page page) {
+		this.page = page;
 	}
 
-	public Book(int id, String name, List<Page> pages) {
+	public Book(int id, String name, Page page) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.pages = pages;
+		this.page = page;
 	}
 
 	@Override
 	public String toString() {
-		return "Book [id=" + id + ", name=" + name + ", pages=" + pages + "]";
+		return "Book [id=" + id + ", name=" + name + ", page=" + page + "]";
 	}
 
 	@Override
@@ -64,7 +66,7 @@ public class Book {
 		int result = 1;
 		result = prime * result + id;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((pages == null) ? 0 : pages.hashCode());
+		result = prime * result + ((page == null) ? 0 : page.hashCode());
 		return result;
 	}
 
@@ -84,10 +86,10 @@ public class Book {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (pages == null) {
-			if (other.pages != null)
+		if (page == null) {
+			if (other.page != null)
 				return false;
-		} else if (!pages.equals(other.pages))
+		} else if (!page.equals(other.page))
 			return false;
 		return true;
 	}
